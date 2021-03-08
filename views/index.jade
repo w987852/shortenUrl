@@ -2,7 +2,7 @@ extends layout
 
 block content
     div
-        h1 輸入想要縮短的網址及有效日期222
+        h1 輸入想要縮短的網址及有效日期
         input(type="text" placeholder="" value="" id="url")
         input(type="date" id="expireDate")
         button(onclick = "shortenFunction()") 送出
@@ -15,26 +15,22 @@ block content
 
         function shortenFunction() {
             const xhr = new XMLHttpRequest();
-            const serverUrl = document.URL;
             let url = document.getElementById('url');
-            let expireDate = document.getElementById('expireDate')
+            let expireDate = document.getElementById('expireDate');
             let shortenBtn = document.getElementById('url');
             let shortenUrl = document.getElementById('shortenUrl');
 
-            xhr.open('POST', `shortenUrl/shortenUrls`);
+            xhr.open('POST', `/shortenUrls`);
             xhr.setRequestHeader('Content-type', 'application/json');
             let data = {
               url: url.value,
               expireDate: expireDate.value,
-            }
+            };
             xhr.send(JSON.stringify(data));
             xhr.onload = () => {
               let response = JSON.parse(xhr.response);
-              let responseUrl = response.data.shortenUrl
-
+              let responseUrl = response.data.shortenUrl;
               shortenUrl.innerText = `${responseUrl}`;
               shortenUrl.href = `${responseUrl}`;
             }
-
-
         }
