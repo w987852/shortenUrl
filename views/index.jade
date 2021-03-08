@@ -24,8 +24,8 @@ block content
             xhr.open('POST', `shortenUrl/shortenUrls`);
             xhr.setRequestHeader('Content-type', 'application/json');
             let data = {
-              url,
-              expireDate
+              url: url.value,
+              expireDate: expireDate.value,
             }
             xhr.send(JSON.stringify(data));
             xhr.onload = () => {
