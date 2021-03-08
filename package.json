@@ -5,10 +5,17 @@
   "engines": {
     "node": ">=12.13.1"
   },
+  "config": {
+    "appname": "URL_Shortener"
+  },
   "scripts": {
+    "start:dev": "NODE_ENV=dev pm2 start ecosystem.config.js; npm run log:dev",
+    "start:prod": "NODE_ENV=prod pm2 start ecosystem.config.js; npm run log:prod",
     "start": "pm2 start ecosystem.config.js; npm run log",
     "log": "pm2 logs URL_Shortener",
-    "deploy": "pm2 deploy ecosystem.config.js prod"
+    "log:dev": "pm2 logs URL_Shortener-dev",
+    "log:prod":  "pm2 logs URL_Shortener-prod",
+    "deploy:prod": "pm2 deploy ecosystem.config.js prod"
   },
   "dependencies": {
     "co": "^4.6.0",
