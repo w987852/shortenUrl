@@ -5,17 +5,26 @@ const moment = require('moment');
 const hashName = 'shortenUrl';
 
 class ShortenUrlService {
+    /**
+     * 建立短網址並存入DB
+     * @param {String}  url             網址 
+     * @param {Date}    expireDate      逾期時限
+     * @return {String}                 短網址ID
+     */
     static async createShortenUrl(url, expireDate) {
         let id;
         let isExists;
         do {
-            //id = await nanoid(10);
-            id = randomStr(10)
+            id = await nanoid(10);
             isExists = await redis.hexists(hashName, id);
         } while (isExists)
         await redis.hmset(hashName, id, url, 'expireDate', expireDate);
         return id;
     }
+    /**
+     * 跳轉網址
+     * @param {String} shortenUrlId     短網址ID
+     */
     static async redirectUrl(shortenUrlId) {
         let shortenUrl = await redis.hmget(hashName, shortenUrlId, 'expireDate');
         let [url, expireDate] = shortenUrl;
@@ -25,6 +34,11 @@ class ShortenUrlService {
         } 
         return url;
     }
+    /**
+     * 查找短網址資料
+     * @param {String} shortenUrlId     短網址ID
+     * @return {String, Date}           {網址, 逾期時限} 
+     */
     static async readShortenUrl(shortenUrlId) {
         let shortenUrl = await redis.hmget(hashName, shortenUrlId, 'expireDate');
         let [url, expireDate] = shortenUrl;
@@ -38,12 +52,4 @@ class ShortenUrlService {
     }
 }
 
-function randomStr(length) {
-    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let str = '';
-    for (let i = 0; i < length; i++) {
-      str += _.sample(possible);
-    }
-    return str;
-}
 module.exports = ShortenUrlService;
