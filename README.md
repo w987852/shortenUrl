@@ -1,16 +1,20 @@
 # shortenUrl
 shortenUrl Service
 
-use Node.Js and Redis to create shortenUrl Service
+use Node.Js and Redis to create shortenUrl Service and build on AWS
 
-1.創建短網址連結<br><br/>
-2.進入短網址連結<br><br/>
+1. 創建短網址連結
+2. 進入短網址連結
 ---
-3.取得短網址資料<br><br/>
+3. 取得短網址資料
 ---
-TODO
-4.定期清除逾期的資料<br><br/>
-5.處理DDOS(透過限制IP或使用者用量)<br><br/>
+### TODO
+4. 定期清除逾期的資料
+5. 處理DDOS(透過限制IP或使用者用量)
+---
+## Demo
+URL: http://13.231.192.73:3002/
+
 ---
 ## Install
 Node.Js 12.13.1
@@ -24,8 +28,8 @@ Node.Js 12.13.1
     npm run start:prod
 
 ## Develop
-1.Run Redis
-2.Run Project
+1. Run Redis
+2. Run Project
 
 ## Folder Description
 - app
