@@ -4,7 +4,7 @@ block content
     div
         h1 輸入想要縮短的網址及有效日期
         input(type="text" placeholder="" value="" id="url")
-        input(type="date" id="expireDate")
+        input(type="datetime-local" id="expireDate")
         button(onclick = "shortenFunction()") 送出
         h2 以下是短網址
         a(id="shortenUrl")
@@ -23,14 +23,19 @@ block content
             xhr.open('POST', `/shortenUrls`);
             xhr.setRequestHeader('Content-type', 'application/json');
             let data = {
-              url: url.value,
-              expireDate: expireDate.value,
+                url: url.value,
+                expireDate: expireDate.value,
             };
             xhr.send(JSON.stringify(data));
             xhr.onload = () => {
               let response = JSON.parse(xhr.response);
-              let responseUrl = response.data.shortenUrl;
-              shortenUrl.innerText = `${responseUrl}`;
-              shortenUrl.href = `${responseUrl}`;
+              if (response.status === 'success') {
+                  let responseUrl = response.data.shortenUrl;
+                  shortenUrl.innerText = `${responseUrl}`;
+                  shortenUrl.href = `${responseUrl}`;
+              } else if (response.status === 'failed'){
+                  let error = response.error;
+                  shortenUrl.innerText = error;
+              }
             }
         }

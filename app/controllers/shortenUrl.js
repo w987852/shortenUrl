@@ -1,5 +1,6 @@
 
 'use strict'
+const moment = require('moment');
 
 const ShortenUrlService = require('app/services/ShortenUrlService');
 const config = require('config/config');
@@ -36,7 +37,13 @@ async function createOne(req, res, next) {
     let url = _.get(req, 'body.url');
     let expireDate = _.get(req, 'body.expireDate');
     if (!url) {
-        res.json({status: 'error', error: '缺少必填參數url'});
+        return res.json({status: 'failed', error: '缺少必填參數url'});
+    }
+    if (expireDate) {
+        let isExpired = moment().isAfter(moment(expireDate));
+        if (isExpired) {
+            return res.json({status: 'failed', error: '所選時間已經逾期'});
+        }
     }
     try {
         let id = await ShortenUrlService.createShortenUrl(url, expireDate);
